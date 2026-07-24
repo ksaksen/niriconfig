@@ -9,29 +9,23 @@
     "spacing": 8, // Gaps between modules
     // Choose the order of the modules
     "modules-left": [
-        "network",
         "tray",
+        "network",
         "niri/workspaces"
     ],
     "modules-center": [
     ],
+    // modules-right is right-anchored: the FIRST entry sits closest to the
+    // center (squeezed first if the bar runs out of room on a narrow/unknown
+    // screen), the LAST entry sits at the true screen edge (safest from
+    // clipping). group/extras collapses the non-essential modules behind a
+    // toggle so battery/audio/clock/power always have room, regardless of
+    // output width.
     "modules-right": [
-        "mpd",
-        "idle_inhibitor",
-        "pulseaudio",
-        "custom/updates",
-        "custom/docker",
-        "custom/colorscheme",
-        "custom/display",
-        "custom/screenshot-region",
-        "power-profiles-daemon",
-        "cpu",
-        "memory",
-        "backlight",
-        "keyboard-state",
-        "niri/language",
+        "group/extras",
         "battery",
         "battery#bat2",
+        "pulseaudio",
         "clock",
         "custom/power"
     ],
@@ -61,6 +55,34 @@
         "format-icons": ["", ""],
         "tooltip": true,
         "tooltip-format": "{app}: {title}"
+    },
+    "group/extras": {
+        "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 400,
+            "click-to-reveal": true
+        },
+        "modules": [
+            "custom/extras-toggle",
+            "mpd",
+            "idle_inhibitor",
+            "custom/updates",
+            "custom/docker",
+            "custom/colorscheme",
+            "custom/display",
+            "custom/screenshot-region",
+            "power-profiles-daemon",
+            "cpu",
+            "memory",
+            "backlight",
+            "keyboard-state",
+            "niri/language"
+        ]
+    },
+    "custom/extras-toggle": {
+        "format": "⋯",
+        "tooltip": true,
+        "tooltip-format": "Flere statusmoduler (mpd, cpu, minne, lysstyrke m.m.)"
     },
     "mpd": {
         "format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}% ",

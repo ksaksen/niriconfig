@@ -43,6 +43,7 @@ tooltip label {
 #custom-colorscheme,
 #custom-display,
 #custom-screenshot-region,
+#custom-extras-toggle,
 #idle_inhibitor,
 #network,
 #pulseaudio,
@@ -255,4 +256,17 @@ tooltip label {
 #tray {
     padding-left: 8px;
     padding-right: 8px;
+}
+
+#group-extras {
+    margin: 0;
+    padding: 0;
+}
+
+#custom-extras-toggle {
+    color: @fg-muted;
+}
+
+#custom-extras-toggle:hover {
+    color: @fg;
 }
