@@ -22,10 +22,11 @@ if [[ -z "${outputs}" ]]; then
     exit 1
 fi
 
-pkill swaybg 2>/dev/null || true
-
+args=()
 while IFS= read -r output; do
     [[ -n "${output}" ]] || continue
-    swaybg -o "${output}" -i "${wallpaper}" -m fill &
-    disown
+    args+=(-o "${output}" -i "${wallpaper}" -m fill)
 done <<< "${outputs}"
+
+pkill swaybg 2>/dev/null || true
+exec swaybg "${args[@]}"
