@@ -37,6 +37,33 @@ def apply_home(outputs):
         niri_out(laptop, "off")
 
 
+def apply_office(outputs):
+    samsung = find_output(outputs, make_contains="Samsung", model_contains="LS49A950U") \
+        or find_output(outputs, make_contains="Samsung")
+    if not samsung:
+        notify("Finner ikke Samsung LS49A950U — er den koblet til?")
+        return
+    niri_out(samsung, "on")
+    niri_out(samsung, "mode", "5120x1440@120")
+    niri_out(samsung, "scale", "1")
+    niri_out(samsung, "position", "set", "0", "0")
+    niri_out(samsung, "vrr", "on")
+    laptop = find_output(outputs, make_contains="Sharp")
+    if laptop:
+        niri_out(laptop, "off")
+
+
+def apply_mobile(outputs):
+    laptop = find_output(outputs, make_contains="Sharp") or next(iter(outputs))
+    niri_out(laptop, "on")
+    niri_out(laptop, "mode", "3840x2400@59.994")
+    niri_out(laptop, "scale", "2")
+    niri_out(laptop, "position", "set", "0", "0")
+    for name in outputs:
+        if name != laptop:
+            niri_out(name, "off")
+
+
 def notify(msg):
     subprocess.run(["notify-send", "Skjermprofil", msg], check=False)
 
@@ -57,6 +84,8 @@ def restart_kanshi():
 
 PROFILES = {
     "home": apply_home,
+    "office": apply_office,
+    "mobile": apply_mobile,
 }
 
 

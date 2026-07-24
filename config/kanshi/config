@@ -9,3 +9,24 @@ profile home {
     output "Sharp Corporation 0x1516" disable
     exec "$HOME/.local/bin/niri-set-wallpaper"
 }
+
+profile office {
+    output "Samsung Electric Company - LS49A950U - *" {
+        mode "5120x1440@119.999001Hz"
+        position 0,0
+        scale 1
+        adaptive_sync on
+    }
+
+    output "Sharp Corporation 0x1516" disable
+    exec "$HOME/.local/bin/niri-set-wallpaper"
+}
+
+profile mobile {
+    output "Sharp Corporation 0x1516" {
+        mode "3840x2400@59.993999Hz"
+        scale 2
+        position 0,0
+    }
+    exec "$HOME/.local/bin/niri-set-wallpaper"
+}

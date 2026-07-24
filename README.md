@@ -7,7 +7,7 @@ arbeidsgiveren — dette er ment for privat bruk.
 ## Innhold
 
 - `config/niri/config.kdl`: window manager-oppsett (keybindings, workspace- og window-rules)
-- `config/kanshi/config`: `home`-skjermprofil, kjører wallpaper-scriptet ved bytte
+- `config/kanshi/config`: `home`/`office`/`mobile`-skjermprofiler, kjører wallpaper-scriptet ved bytte
 - `config/waybar/config.jsonc` + `style.css`: statuslinje-layout og styling
 - `config/waybar/docker-status.py`: Waybar-modul for Docker-status
 - `config/waybar/update-status.py`: Waybar-modul for Fedora-oppdateringer (`dnf`)
@@ -74,5 +74,5 @@ i `~/.local/share/fonts/` hvis den mangler.
 - `install.sh` linker wallpaper-/lockscreen-bildet til `~/.local/share/wallpapers/italy-landscape_5120x1440.jpg`.
 - `niri` og `kanshi` bruker `~/.local/bin/niri-set-wallpaper` for å sette bakgrunn på aktiv skjerm, så `niri` og `jq` må være installert (`swaybg` installeres automatisk av `install.sh`).
 - `niri` starter `waybar` og `kanshi` ved oppstart, samt `workspace-gc` som automatisk unnavngir tomme, inaktive workspaces.
-- `kanshi/config` inneholder kun `home`-profilen med mine egne skjermmodeller/-oppløsninger — juster `output`-linjene (og evt. `scripts/display-profile-switcher`) til dine egne skjermer.
+- `kanshi/config` inneholder `home`/`office`/`mobile`-profilene med mine egne skjermmodeller/-oppløsninger — juster `output`-linjene (og evt. `scripts/display-profile-switcher`) til dine egne skjermer.
 - `config/sudoers.d/drm-rescan` installeres ikke av `install.sh` (krever root). Kopier den manuelt om ønskelig: `sudo cp config/sudoers.d/drm-rescan /etc/sudoers.d/drm-rescan` — forutsetter at gruppen `linuxdesktopusers` finnes og at brukeren din er medlem.
