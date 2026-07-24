@@ -8,18 +8,24 @@ if [[ ! -f "${wallpaper}" ]]; then
     exit 1
 fi
 
-output=""
+outputs=""
 for _ in $(seq 1 20); do
-    if output="$(niri msg -j focused-output 2>/dev/null | jq -r '.name // empty')" && [[ -n "${output}" ]]; then
+    outputs="$(niri msg -j outputs 2>/dev/null | jq -r 'to_entries[] | select(.value.logical != null) | .key')"
+    if [[ -n "${outputs}" ]]; then
         break
     fi
     sleep 0.25
 done
 
-if [[ -z "${output}" ]]; then
-    printf 'could not determine focused niri output\n' >&2
+if [[ -z "${outputs}" ]]; then
+    printf 'could not determine any enabled niri outputs\n' >&2
     exit 1
 fi
 
 pkill swaybg 2>/dev/null || true
-exec swaybg -o "${output}" -i "${wallpaper}" -m fill
+
+while IFS= read -r output; do
+    [[ -n "${output}" ]] || continue
+    swaybg -o "${output}" -i "${wallpaper}" -m fill &
+    disown
+done <<< "${outputs}"
