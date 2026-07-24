@@ -262,6 +262,14 @@ spawn-at-startup "$HOME/.local/bin/workspace-gc"
 spawn-at-startup "waybar"
 spawn-at-startup "kanshi"
 
+// These normally run via XDG autostart .desktop files, which niri does not
+// process unless run as a full session with that support enabled. Spawn them
+// explicitly so the tray (wifi/bluetooth/toolbox) is populated regardless of
+// how niri was started. See install.sh for how missing binaries are handled.
+spawn-at-startup "nm-applet"
+spawn-at-startup "blueman-applet"
+spawn-at-startup "jetbrains-toolbox" "--minimize"
+
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
 // spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"

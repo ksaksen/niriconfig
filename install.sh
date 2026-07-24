@@ -55,4 +55,33 @@ if [ ! -f "$HOME/.local/share/alacritty/colorscheme.toml" ]; then
     cp "$ROOT/config/alacritty/colors-dark.toml" "$HOME/.local/share/alacritty/colorscheme.toml"
 fi
 
+ensure_dnf_package() {
+    local binary="$1"
+    local package="$2"
+
+    if command -v "$binary" >/dev/null 2>&1; then
+        return
+    fi
+
+    if ! command -v dnf >/dev/null 2>&1; then
+        printf '%s not found and dnf is unavailable, skipping install of %s\n' "$binary" "$package" >&2
+        return
+    fi
+
+    printf '%s not found, installing %s via dnf...\n' "$binary" "$package"
+    sudo dnf install -y "$package"
+}
+
+# Tray applets spawned by config/niri/config.kdl. Both packages are in
+# Fedora's official repos, so install them automatically if missing.
+ensure_dnf_package "nm-applet" "network-manager-applet"
+ensure_dnf_package "blueman-applet" "blueman"
+
+# JetBrains Toolbox is NOT in Fedora's official repos (installed manually
+# from a JetBrains-provided .rpm), so it is intentionally not auto-installed
+# here - the spawn-at-startup line for it in config.kdl is a no-op if missing.
+if ! command -v jetbrains-toolbox >/dev/null 2>&1; then
+    printf 'jetbrains-toolbox not found (not in Fedora repos) - hopper over, installer manuelt om ønskelig\n'
+fi
+
 printf 'backup directory: %s\n' "$BACKUP_DIR"
