@@ -88,6 +88,10 @@ ensure_dnf_package "wl-copy" "wl-clipboard"
 # wallpaper. In Fedora's official repos.
 ensure_dnf_package "swaybg" "swaybg"
 
+# Spawned at startup by config/niri/config.kdl to manage output layout.
+# In Fedora's official repos.
+ensure_dnf_package "kanshi" "kanshi"
+
 # JetBrains Toolbox is NOT in Fedora's official repos (installed manually
 # from a JetBrains-provided .rpm), so it is intentionally not auto-installed
 # here - the spawn-at-startup line for it in config.kdl is a no-op if missing.
