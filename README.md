@@ -46,10 +46,11 @@ waybar-symboler skal vises riktig.
 
 `niri` spawner også `nm-applet` (pakke: `network-manager-applet`) og `blueman-applet` (pakke: `blueman`)
 for wifi-/bluetooth-ikoner i systray, siden niri ikke prosesserer XDG autostart-filer selv.
-`install.sh` installerer disse automatisk via `dnf` hvis de mangler, sammen med `grim`, `slurp` og
-`wl-clipboard` (skjermdump-verktøyene bak `Mod+Shift+S`). `jetbrains-toolbox` spawnes også, men er
-ikke i Fedoras offisielle pakkebrønn og installeres derfor ikke automatisk — hopp over den linja i
-`config/niri/config.kdl` hvis du ikke bruker JetBrains Toolbox.
+`install.sh` installerer disse automatisk via `dnf` hvis de mangler, sammen med `grim`, `slurp`,
+`wl-clipboard` (skjermdump-verktøyene bak `Mod+Shift+S`) og `swaybg` (brukt av
+`scripts/niri-set-wallpaper` og `kanshi/config` til å sette bakgrunn). `jetbrains-toolbox` spawnes
+også, men er ikke i Fedoras offisielle pakkebrønn og installeres derfor ikke automatisk — hopp over
+den linja i `config/niri/config.kdl` hvis du ikke bruker JetBrains Toolbox.
 
 ## Nøkkel-keybindings (definert i `niri/config.kdl`)
 
@@ -67,7 +68,7 @@ ikke i Fedoras offisielle pakkebrønn og installeres derfor ikke automatisk — 
 ## Merknader
 
 - `install.sh` linker wallpaper-/lockscreen-bildet til `~/.local/share/wallpapers/italy-landscape_5120x1440.jpg`.
-- `niri` og `kanshi` bruker `~/.local/bin/niri-set-wallpaper` for å sette bakgrunn på aktiv skjerm, så `swaybg`, `niri` og `jq` må være installert.
+- `niri` og `kanshi` bruker `~/.local/bin/niri-set-wallpaper` for å sette bakgrunn på aktiv skjerm, så `niri` og `jq` må være installert (`swaybg` installeres automatisk av `install.sh`).
 - `niri` starter `waybar` og `kanshi` ved oppstart, samt `workspace-gc` som automatisk unnavngir tomme, inaktive workspaces.
 - `kanshi/config` inneholder kun `home`-profilen med mine egne skjermmodeller/-oppløsninger — juster `output`-linjene (og evt. `scripts/display-profile-switcher`) til dine egne skjermer.
 - `config/sudoers.d/drm-rescan` installeres ikke av `install.sh` (krever root). Kopier den manuelt om ønskelig: `sudo cp config/sudoers.d/drm-rescan /etc/sudoers.d/drm-rescan` — forutsetter at gruppen `linuxdesktopusers` finnes og at brukeren din er medlem.
