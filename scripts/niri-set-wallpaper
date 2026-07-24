@@ -1,45 +1,56 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+wallpaper="${HOME}/.local/share/wallpapers/italy-landscape_5120x1440.jpg"
 log_file="${HOME}/.local/state/niri-set-wallpaper.log"
 mkdir -p "$(dirname "${log_file}")"
-: > "${log_file}"
 
 log() {
     printf '%(%F %T)T %s\n' -1 "$1" >> "${log_file}"
 }
 
-log "started"
+last_outputs=""
 
-wallpaper="${HOME}/.local/share/wallpapers/italy-landscape_5120x1440.jpg"
+apply_wallpaper() {
+    [[ -f "${wallpaper}" ]] || return 0
 
-if [[ ! -f "${wallpaper}" ]]; then
-    log "wallpaper not found: ${wallpaper}"
-    exit 1
-fi
+    local outputs
+    outputs="$(niri msg -j outputs 2>/dev/null | jq -r 'to_entries[] | select(.value.logical != null) | .key' | sort)" || return 0
+    [[ -n "${outputs}" ]] || return 0
 
-outputs=""
-attempt=0
-for _ in $(seq 1 60); do
-    attempt=$((attempt + 1))
-    if outputs="$(niri msg -j outputs 2>/dev/null | jq -r 'to_entries[] | select(.value.logical != null) | .key')" && [[ -n "${outputs}" ]]; then
-        log "found outputs after ${attempt} attempt(s): $(tr '\n' ' ' <<< "${outputs}")"
-        break
+    if [[ "${outputs}" == "${last_outputs}" ]] && pgrep -f "^swaybg " >/dev/null 2>&1; then
+        return 0
     fi
-    sleep 0.5
-done
 
-if [[ -z "${outputs}" ]]; then
-    log "could not determine any enabled niri outputs after ${attempt} attempts, giving up"
+    local args=()
+    while IFS= read -r output; do
+        [[ -n "${output}" ]] || continue
+        args+=(-o "${output}" -i "${wallpaper}" -m fill)
+    done <<< "${outputs}"
+
+    pkill -f "^swaybg " 2>/dev/null || true
+    log "applying wallpaper for: $(tr '\n' ' ' <<< "${outputs}")"
+    swaybg "${args[@]}" &
+    disown
+
+    last_outputs="${outputs}"
+}
+
+if ! command -v niri >/dev/null 2>&1; then
+    log "niri not found in PATH"
     exit 1
 fi
 
-args=()
-while IFS= read -r output; do
-    [[ -n "${output}" ]] || continue
-    args+=(-o "${output}" -i "${wallpaper}" -m fill)
-done <<< "${outputs}"
+log "started"
+apply_wallpaper
 
-pkill swaybg 2>/dev/null || true
-log "launching: swaybg ${args[*]}"
-exec swaybg "${args[@]}"
+while true; do
+    if ! niri msg event-stream 2>/dev/null | while IFS= read -r _; do
+        apply_wallpaper
+    done; then
+        sleep 1
+        continue
+    fi
+
+    sleep 1
+done

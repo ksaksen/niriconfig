@@ -44,14 +44,27 @@ mode/position/scale. `scripts/display-profile-switcher` is a fuzzel-driven front
 for switching/reloading kanshi profiles, with a Python fallback (`apply_home`) that drives the same
 result directly via `niri msg output ...` if kanshi's own profile match fails.
 
-**Workspace naming lifecycle**: niri workspaces get auto-named by some workflows; `workspace-gc`
-(spawned at startup) runs a long-lived loop over `niri msg event-stream`, invoking
-`cleanup-empty-workspaces` on every event to unset names on workspaces that are empty and not
-focused/active. `close-workspace` is the interactive counterpart — it closes every window in the
-focused workspace (via repeated `niri msg action focus-window` + `close-window`, polling until the
-window list stabilizes since some apps prompt on close) and then invokes `cleanup-empty-workspaces`
-itself. Both scripts shell out to `niri msg --json ...` and parse the result with inline Python
-(`python3 -c '...'`) rather than `jq`, for structured filtering logic.
+**Event-stream daemon pattern**: anything that needs to react to niri state changes reliably —
+regardless of how long niri itself takes to become ready at boot — is written as a long-lived loop
+around `niri msg event-stream`, not a one-shot script with a sleep/retry budget (a one-shot script
+raced against niri's startup timing is fragile and hardware-dependent; see git history on
+`niri-set-wallpaper` for what that failure mode looked like in practice). `workspace-gc` and
+`niri-set-wallpaper` are both spawned once at startup and loop forever: reconnect to
+`event-stream` with a 1s backoff if it drops, and re-run their action on every event. Follow this
+pattern for anything new that depends on live niri/output state.
+
+- `workspace-gc` invokes `cleanup-empty-workspaces` on every event to unset names on workspaces that
+  are empty and not focused/active. `close-workspace` is the interactive counterpart — it closes every
+  window in the focused workspace (via repeated `niri msg action focus-window` + `close-window`,
+  polling until the window list stabilizes since some apps prompt on close) and then invokes
+  `cleanup-empty-workspaces` itself. These three scripts shell out to `niri msg --json ...` and parse
+  the result with inline Python (`python3 -c '...'`) rather than `jq`, for structured filtering logic.
+- `niri-set-wallpaper` re-derives the enabled-output set (`niri msg -j outputs`, via `jq`) on every
+  event and only kills/relaunches `swaybg` when that set actually changed (or `swaybg` isn't running) —
+  not on every event — to avoid a visible wallpaper flash on unrelated niri activity. One `swaybg`
+  process is launched with one `-o`/`-i`/`-m` group per output rather than one process per output,
+  since separate per-output processes each log spurious "could not find config for output" warnings
+  for every *other* output they didn't get.
 
 **Waybar modules** (`config/waybar/*.py`) are standalone scripts invoked by Waybar per its
 `config.jsonc` `custom/*` module definitions — each prints one JSON line (text/tooltip/class) per
@@ -72,6 +85,6 @@ script's symlink list.
 ## Conventions
 
 - Scripts are Bash (`set -euo pipefail`, `#!/usr/bin/env bash`) or Python 3 (`#!/usr/bin/env python3`); no other runtimes are used.
-- Bash scripts that shell out to `niri msg --json` and need to filter/reshape the JSON do so with inline `python3 -c '...'` rather than adding a `jq` dependency for anything beyond trivial field extraction (`niri-set-wallpaper` uses `jq -r` for the one simple case).
+- Bash scripts that shell out to `niri msg --json` and need to filter/reshape the JSON do so with inline `python3 -c '...'` rather than adding a `jq` dependency for anything beyond trivial field extraction (`niri-set-wallpaper` uses `jq -r` for its one simple filter: enabled output names).
 - Scripts check `command -v <tool>` and exit with a message on `stderr` when a required binary is missing, rather than failing silently or with a raw error.
 - README.md (in Norwegian) is the canonical file-by-file description of this repo, the install behavior, dependencies, and key keybindings — keep it in sync when adding/removing files or changing keybindings, rather than duplicating that content here.
