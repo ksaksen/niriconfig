@@ -95,4 +95,43 @@ if ! command -v jetbrains-toolbox >/dev/null 2>&1; then
     printf 'jetbrains-toolbox not found (not in Fedora repos) - hopper over, installer manuelt om ønskelig\n'
 fi
 
+# CaskaydiaCove Nerd Font (Mono) is required by config/alacritty/alacritty.toml
+# and config/waybar/style.css, but there is no Fedora package for it - it has
+# to be downloaded from the Nerd Fonts project and installed as loose .ttf
+# files, same as it's already set up on this machine.
+ensure_nerd_font() {
+    local family="$1"
+    local asset="$2"
+    local fonts_dir="$HOME/.local/share/fonts"
+
+    if fc-list | grep -qi "${family}"; then
+        return
+    fi
+
+    ensure_dnf_package "curl" "curl"
+    ensure_dnf_package "unzip" "unzip"
+
+    if ! command -v curl >/dev/null 2>&1 || ! command -v unzip >/dev/null 2>&1; then
+        printf '%s not found and curl/unzip unavailable, skipping font install\n' "${family}" >&2
+        return
+    fi
+
+    printf '%s not found, downloading from Nerd Fonts...\n' "${family}"
+    local tmp_zip
+    tmp_zip="$(mktemp --suffix=.zip)"
+
+    if ! curl -fsSL "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/${asset}" -o "${tmp_zip}"; then
+        printf 'failed to download %s, skipping font install\n' "${asset}" >&2
+        rm -f "${tmp_zip}"
+        return
+    fi
+
+    mkdir -p "${fonts_dir}"
+    unzip -oq "${tmp_zip}" -d "${fonts_dir}" "*Mono*.ttf"
+    rm -f "${tmp_zip}"
+    fc-cache -f "${fonts_dir}" >/dev/null 2>&1
+}
+
+ensure_nerd_font "CaskaydiaCove Nerd Font Mono" "CascadiaCode.zip"
+
 printf 'backup directory: %s\n' "$BACKUP_DIR"

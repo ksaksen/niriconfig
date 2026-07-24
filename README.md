@@ -41,7 +41,7 @@ og tar backup av eksisterende filer i `~/.dotfiles-backup/<timestamp>/`.
 ## Avhengigheter
 
 Niri, Kanshi, Waybar, Alacritty (eller Kitty), Fuzzel, Swaylock, Brightnessctl, Wpctl, Jq, Python 3,
-Grim, Slurp, wl-clipboard, en Nerd Font (f.eks. CaskaydiaCove eller IosevkaTerm) for at prompt- og
+Grim, Slurp, wl-clipboard, samt fonten **CaskaydiaCove Nerd Font (Mono)** for at prompt- og
 waybar-symboler skal vises riktig.
 
 `niri` spawner også `nm-applet` (pakke: `network-manager-applet`) og `blueman-applet` (pakke: `blueman`)
@@ -51,6 +51,10 @@ for wifi-/bluetooth-ikoner i systray, siden niri ikke prosesserer XDG autostart-
 `scripts/niri-set-wallpaper` og `kanshi/config` til å sette bakgrunn). `jetbrains-toolbox` spawnes
 også, men er ikke i Fedoras offisielle pakkebrønn og installeres derfor ikke automatisk — hopp over
 den linja i `config/niri/config.kdl` hvis du ikke bruker JetBrains Toolbox.
+
+CaskaydiaCove Nerd Font (Mono) er heller ikke i Fedoras offisielle pakkebrønn — `install.sh` laster
+den derfor ned direkte fra [Nerd Fonts](https://github.com/ryanoasis/nerd-fonts) og installerer den
+i `~/.local/share/fonts/` hvis den mangler.
 
 ## Nøkkel-keybindings (definert i `niri/config.kdl`)
 

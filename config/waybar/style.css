@@ -13,7 +13,7 @@
 * {
     border: none;
     border-radius: 0;
-    font-family: "IosevkaTerm Nerd Font", "IBM Plex Sans", "Font Awesome 6 Free", sans-serif;
+    font-family: "CaskaydiaCove Nerd Font", "Font Awesome 6 Free", sans-serif;
     font-size: 13px;
     min-height: 0;
 }
@@ -205,7 +205,7 @@ tooltip label {
     min-width: 126px;
     background: linear-gradient(135deg, rgba(105, 210, 231, 0.2), rgba(247, 178, 103, 0.22));
     color: @fg;
-    font-family: "IosevkaTerm Nerd Font", monospace;
+    font-family: "CaskaydiaCove Nerd Font Mono", monospace;
     font-weight: 700;
     letter-spacing: 0.06em;
 }
