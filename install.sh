@@ -77,6 +77,13 @@ ensure_dnf_package() {
 ensure_dnf_package "nm-applet" "network-manager-applet"
 ensure_dnf_package "blueman-applet" "blueman"
 
+# Screenshot tooling used by the Mod+Shift+S bind and the
+# custom/screenshot-region waybar module. All three are in Fedora's
+# official repos.
+ensure_dnf_package "grim" "grim"
+ensure_dnf_package "slurp" "slurp"
+ensure_dnf_package "wl-copy" "wl-clipboard"
+
 # JetBrains Toolbox is NOT in Fedora's official repos (installed manually
 # from a JetBrains-provided .rpm), so it is intentionally not auto-installed
 # here - the spawn-at-startup line for it in config.kdl is a no-op if missing.

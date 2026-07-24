@@ -41,13 +41,15 @@ og tar backup av eksisterende filer i `~/.dotfiles-backup/<timestamp>/`.
 ## Avhengigheter
 
 Niri, Kanshi, Waybar, Alacritty (eller Kitty), Fuzzel, Swaylock, Brightnessctl, Wpctl, Jq, Python 3,
-en Nerd Font (f.eks. CaskaydiaCove eller IosevkaTerm) for at prompt- og waybar-symboler skal vises riktig.
+Grim, Slurp, wl-clipboard, en Nerd Font (f.eks. CaskaydiaCove eller IosevkaTerm) for at prompt- og
+waybar-symboler skal vises riktig.
 
 `niri` spawner også `nm-applet` (pakke: `network-manager-applet`) og `blueman-applet` (pakke: `blueman`)
 for wifi-/bluetooth-ikoner i systray, siden niri ikke prosesserer XDG autostart-filer selv.
-`install.sh` installerer disse to automatisk via `dnf` hvis de mangler. `jetbrains-toolbox` spawnes
-også, men er ikke i Fedoras offisielle pakkebrønn og installeres derfor ikke automatisk — hopp over
-den linja i `config/niri/config.kdl` hvis du ikke bruker JetBrains Toolbox.
+`install.sh` installerer disse automatisk via `dnf` hvis de mangler, sammen med `grim`, `slurp` og
+`wl-clipboard` (skjermdump-verktøyene bak `Mod+Shift+S`). `jetbrains-toolbox` spawnes også, men er
+ikke i Fedoras offisielle pakkebrønn og installeres derfor ikke automatisk — hopp over den linja i
+`config/niri/config.kdl` hvis du ikke bruker JetBrains Toolbox.
 
 ## Nøkkel-keybindings (definert i `niri/config.kdl`)
 
