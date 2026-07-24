@@ -1,0 +1,63 @@
+# ~/.config/alacritty/alacritty.toml
+[general]
+import = ["~/.local/share/alacritty/colorscheme.toml"]
+
+[window]
+opacity = 0.8
+decorations = "none"
+dynamic_padding = true
+
+[window.padding]
+x = 6
+y = 6
+
+[font]
+size = 8.5
+
+[font.normal]
+family = "CaskaydiaCove Nerd Font Mono"
+style = "Regular"
+
+# Litt bedre vertikal spacing (ser mindre "cramped" ut på små fonter)
+[font.offset]
+x = 0
+y = 1
+
+# Cursor
+[cursor]
+style = { shape = "Block", blinking = "On" }
+blink_interval = 500
+
+# Scrolling
+[scrolling]
+history = 10000
+multiplier = 3
+
+# Selection
+[selection]
+save_to_clipboard = true
+
+# Performance / rendering
+[env]
+WINIT_X11_SCALE_FACTOR = "1.0"
+
+# Keybindings (optional, men nice)
+[[keyboard.bindings]]
+key = "Minus"
+mods = "Control|Shift"
+action = "DecreaseFontSize"
+
+[[keyboard.bindings]]
+key = "Equals"
+mods = "Control|Shift"
+action = "IncreaseFontSize"
+
+[[keyboard.bindings]]
+key = "Key0"
+mods = "Control|Shift"
+action = "ResetFontSize"
+
+[[keyboard.bindings]]
+key = "Return"
+mods = "Shift"
+chars = "\u001B\r"

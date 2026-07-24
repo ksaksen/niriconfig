@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+exec bash -lc '
+top -o %MEM
+'

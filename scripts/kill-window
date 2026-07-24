@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if ! command -v niri >/dev/null 2>&1; then
+    echo "niri not found in PATH" >&2
+    exit 1
+fi
+
+# Safe default: close the focused window via niri instead of killing a process directly.
+niri msg action close-window

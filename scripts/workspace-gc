@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+CLEANUP_BIN="${WORKSPACE_GC_CLEANUP_BIN:-$HOME/.local/bin/cleanup-empty-workspaces}"
+
+if ! command -v niri >/dev/null 2>&1; then
+    echo "niri not found in PATH" >&2
+    exit 1
+fi
+
+if [[ ! -x "${CLEANUP_BIN}" ]]; then
+    echo "cleanup script not executable: ${CLEANUP_BIN}" >&2
+    exit 1
+fi
+
+run_cleanup() {
+    "${CLEANUP_BIN}" >/dev/null 2>&1 || true
+}
+
+run_cleanup
+
+while true; do
+    if ! niri msg event-stream 2>/dev/null | while IFS= read -r _; do
+        run_cleanup
+    done; then
+        sleep 1
+        continue
+    fi
+
+    sleep 1
+done

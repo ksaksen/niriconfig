@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+export GDK_BACKEND=x11
+export QT_QPA_PLATFORM=xcb
+export IDEA_JDK_OPTS="-Dsun.java2d.opengl=false -Dsun.java2d.xrender=false"
+export AWT_TOOLKIT=MToolkit
+
+# Justér denne: 1, 1.25, 1.5, 1.75, 2 ...
+export _JAVA_OPTIONS="-Dsun.java2d.uiScale=1.5"
+exec env IDEA_JDK_OPTS="-Dsun.java2d.opengl=false -Dsun.java2d.xrender=false"  idea "$@"

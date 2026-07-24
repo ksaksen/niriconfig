@@ -1,0 +1,35 @@
+[colors.primary]
+background = "#f5f0e8"
+foreground = "#2c3440"
+
+[colors.cursor]
+text = "#f5f0e8"
+cursor = "#2c3440"
+
+[colors.vi_mode_cursor]
+text = "#f5f0e8"
+cursor = "#4a5a6a"
+
+[colors.selection]
+text = "#f5f0e8"
+background = "#4d6b7d"
+
+[colors.normal]
+black   = "#2c3440"
+red     = "#9e3b3b"
+green   = "#3a6e38"
+yellow  = "#7a5e1a"
+blue    = "#2d5f8a"
+magenta = "#5c4a8c"
+cyan    = "#2a6b6b"
+white   = "#8c9aa6"
+
+[colors.bright]
+black   = "#4a5a6a"
+red     = "#c04a4a"
+green   = "#4a8a48"
+yellow  = "#9a7a2a"
+blue    = "#3a7aaa"
+magenta = "#7a6aac"
+cyan    = "#3a8a8a"
+white   = "#c8d0d8"

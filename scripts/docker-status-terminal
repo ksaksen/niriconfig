@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+watch -n 2 'docker ps -a --format "table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.RunningFor}}"'

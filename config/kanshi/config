@@ -1,0 +1,11 @@
+profile home {
+    output "Samsung Electric Company C49RG9x H1AK500000" {
+        mode "5120x1440@59.977001Hz"
+        position 0,0
+        scale 1
+        adaptive_sync off
+    }
+
+    output "Sharp Corporation 0x1516" disable
+    exec "$HOME/.local/bin/niri-set-wallpaper"
+}

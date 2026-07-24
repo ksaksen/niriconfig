@@ -1,0 +1,261 @@
+// -*- mode: jsonc -*-
+{
+    "layer": "top",
+    // "position": "bottom", // Waybar position (top|bottom|left|right)
+    "position": "top",
+    "exclusive": true,
+    "height": 34, // Waybar height
+    // "width": 1280, // Waybar width
+    "spacing": 8, // Gaps between modules
+    // Choose the order of the modules
+    "modules-left": [
+        "network",
+        "tray",
+        "niri/workspaces"
+    ],
+    "modules-center": [
+    ],
+    "modules-right": [
+        "mpd",
+        "idle_inhibitor",
+        "pulseaudio",
+        "custom/updates",
+        "custom/docker",
+        "custom/colorscheme",
+        "custom/display",
+        "custom/screenshot-region",
+        "power-profiles-daemon",
+        "cpu",
+        "memory",
+        "backlight",
+        "keyboard-state",
+        "niri/language",
+        "battery",
+        "battery#bat2",
+        "clock",
+        "custom/power"
+    ],
+    // Modules configuration
+    "niri/workspaces": {
+        "format": "{index}",
+        "format-icons": {
+            "active": "",
+            "default": ""
+        }
+    },
+    "keyboard-state": {
+        "numlock": true,
+        "capslock": true,
+        "format": "{name} {icon}",
+        "format-icons": {
+            "locked": "",
+            "unlocked": ""
+        }
+    },
+    "sway/mode": {
+        "format": "<span style=\"italic\">{}</span>"
+    },
+    "sway/scratchpad": {
+        "format": "{icon} {count}",
+        "show-empty": false,
+        "format-icons": ["", ""],
+        "tooltip": true,
+        "tooltip-format": "{app}: {title}"
+    },
+    "mpd": {
+        "format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}% ",
+        "format-disconnected": "Disconnected ",
+        "format-stopped": "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped ",
+        "unknown-tag": "N/A",
+        "interval": 5,
+        "consume-icons": {
+            "on": " "
+        },
+        "random-icons": {
+            "off": "<span color=\"#f53c3c\"></span> ",
+            "on": " "
+        },
+        "repeat-icons": {
+            "on": " "
+        },
+        "single-icons": {
+            "on": "1 "
+        },
+        "state-icons": {
+            "paused": "",
+            "playing": ""
+        },
+        "tooltip-format": "MPD (connected)",
+        "tooltip-format-disconnected": "MPD (disconnected)"
+    },
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "tooltip": true,
+        "tooltip-format-activated": "Hold skjermen vaaken",
+        "tooltip-format-deactivated": "La skjermen hvile automatisk",
+        "format-icons": {
+            "activated": "",
+            "deactivated": ""
+        }
+    },
+    "tray": {
+        "icon-size": 16,
+        "spacing": 10
+        // "icons": {
+        //   "blueman": "bluetooth",
+        //   "TelegramDesktop": "$HOME/.local/share/icons/hicolor/16x16/apps/telegram.png"
+        // }
+    },
+    "clock": {
+        "format": "{:%Y-%m-%d | %H • %M • %S}",
+        "interval": 1,
+        "tooltip": true,
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "mode": "month",
+            "mode-mon-col": 3,
+            "weeks-pos": "right",
+            "on-scroll": 1,
+            "format": {
+                "months": "<span color='#f4efe6'><b>{}</b></span>",
+                "days": "<span color='#b8c0cc'>{}</span>",
+                "weeks": "<span color='#69d2e7'><b>W{}</b></span>",
+                "weekdays": "<span color='#a7dbd8'><b>{}</b></span>",
+                "today": "<span color='#0f141c' bgcolor='#f7b267'><b>{}</b></span>"
+            }
+        }
+    },
+    "cpu": {
+        "format": "<span color=\"#69d2e7\"></span> {usage}%",
+        "tooltip": true,
+        "tooltip-format": "CPU-bruk akkurat nå\nKlikk for live prosessliste sortert på CPU",
+        "on-click": "alacritty -e $HOME/.local/bin/cpu-status-terminal"
+    },
+    "memory": {
+        "format": "<span color=\"#f7b267\"></span> {}%",
+        "tooltip": true,
+        "tooltip-format": "Minnebruk akkurat nå\nKlikk for live prosessliste sortert på minne",
+        "on-click": "alacritty -e $HOME/.local/bin/memory-status-terminal"
+    },
+    "temperature": {
+        // "thermal-zone": 2,
+        // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+        "critical-threshold": 80,
+        // "format-critical": "{temperatureC}°C {icon}",
+        "format": "{temperatureC}°C {icon}",
+        "format-icons": ["", "", ""]
+    },
+    "backlight": {
+        // "device": "acpi_video1",
+        "format": "{icon} {percent}%",
+        "tooltip": true,
+        "tooltip-format": "Lysstyrke: {percent}%\nBruk lysstyrketastene på tastaturet for å justere",
+        "format-icons": ["", "", "", "", "", "", "", "", ""]
+    },
+    "battery": {
+        "states": {
+            // "good": 95,
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon} {capacity}%",
+        "format-full": "{icon} {capacity}%",
+        "format-charging": " {capacity}%",
+        "format-plugged": " {capacity}%",
+        "format-alt": "{icon} {time}",
+        // "format-good": "", // An empty format will hide the module
+        // "format-full": "",
+        "format-icons": ["", "", "", "", ""]
+    },
+    "battery#bat2": {
+        "bat": "BAT2"
+    },
+    "power-profiles-daemon": {
+      "format": "{icon}",
+      "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
+      "tooltip": true,
+      "format-icons": {
+        "default": "",
+        "performance": "",
+        "balanced": "",
+        "power-saver": ""
+      }
+    },
+    "network": {
+        // "interface": "wlp2*", // (Optional) To force the use of this interface
+        "format-wifi": "  {essid} {signalStrength}%",
+        "format-ethernet": "󰈀 {ipaddr}/{cidr}",
+        "tooltip-format": "{ifname} via {gwaddr}",
+        "format-linked": "󰈀 {ifname} no-ip",
+        "format-disconnected": "󰖪 offline",
+        "format-alt": "{ifname}: {ipaddr}/{cidr}"
+    },
+    "pulseaudio": {
+        // "scroll-step": 1, // %, can be a float
+        "format": "{icon} {volume}% {format_source}",
+        "format-bluetooth": "{icon} {volume}%  {format_source}",
+        "format-bluetooth-muted": " {icon}  {format_source}",
+        "format-muted": " {format_source}",
+        "format-source": " {volume}%",
+        "format-source-muted": "",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", ""]
+        },
+        "on-click": "pavucontrol"
+    },
+    "custom/docker": {
+        "format": "{}",
+        "return-type": "json",
+        "interval": 5,
+        "exec": "$HOME/.config/waybar/docker-status.py 2> /dev/null",
+        "on-click": "alacritty -e $HOME/.local/bin/docker-status-terminal"
+    },
+    "custom/colorscheme": {
+        "format": "{}",
+        "return-type": "json",
+        "interval": "once",
+        "signal": 12,
+        "exec": "$HOME/.config/waybar/colorscheme-status.py 2>/dev/null",
+        "on-click": "$HOME/.local/bin/color-scheme-toggle",
+        "tooltip": true
+    },
+    "custom/display": {
+        "format": "{}",
+        "return-type": "json",
+        "interval": 5,
+        "exec": "$HOME/.config/waybar/display-status.py 2>/dev/null",
+        "on-click": "$HOME/.local/bin/display-profile-switcher",
+        "tooltip": true
+    },
+    "custom/screenshot-region": {
+        "format": "",
+        "tooltip": true,
+        "tooltip-format": "Skjermklipp til utklippstavlen\nMod+Shift+S",
+        "on-click": "bash -lc 'grim -g \"$(slurp)\" - | wl-copy'"
+    },
+    "custom/updates": {
+        "format": "{}",
+        "return-type": "json",
+        "interval": 1800,
+        "exec": "$HOME/.config/waybar/update-status.py 2> /dev/null",
+        "on-click": "alacritty -e $HOME/.local/bin/update-status-terminal"
+    },
+    "custom/power": {
+        "format": "⏻",
+        "tooltip": false,
+        "menu": "on-click",
+        "menu-file": "$HOME/.config/waybar/power_menu.xml", // Menu file in resources folder
+        "menu-actions": {
+            "shutdown": "shutdown",
+            "reboot": "reboot",
+            "suspend": "systemctl suspend",
+            "hibernate": "systemctl hibernate"
+        }
+    }
+}

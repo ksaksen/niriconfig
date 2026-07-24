@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+bash -lc '
+echo "Available updates"
+echo "================="
+dnf --setopt=logdir=/tmp check-update || test $? -eq 100
+echo
+echo "Security updates"
+echo "================"
+dnf --setopt=logdir=/tmp updateinfo list updates security || true
+echo
+echo "Press Ctrl+C to close, or Enter to open a shell."
+read -r
+exec bash
+'

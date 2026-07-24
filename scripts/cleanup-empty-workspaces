@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if ! command -v niri >/dev/null 2>&1; then
+    echo "niri not found in PATH" >&2
+    exit 1
+fi
+
+if ! command -v python3 >/dev/null 2>&1; then
+    echo "python3 not found in PATH" >&2
+    exit 1
+fi
+
+workspace_indices="$(
+    niri msg --json workspaces | python3 -c '
+import json
+import sys
+
+workspaces = json.load(sys.stdin)
+
+for workspace in workspaces:
+    name = workspace.get("name")
+    active_window_id = workspace.get("active_window_id")
+    is_focused = workspace.get("is_focused") is True
+    is_active = workspace.get("is_active") is True
+    idx = workspace.get("idx")
+
+    if not isinstance(name, str) or not name:
+        continue
+    if active_window_id is not None:
+        continue
+    if is_focused or is_active:
+        continue
+    if not isinstance(idx, int):
+        continue
+
+    print(idx)
+'
+)"
+
+if [[ -z "${workspace_indices}" ]]; then
+    exit 0
+fi
+
+while IFS= read -r workspace_idx; do
+    [[ -n "${workspace_idx}" ]] || continue
+    niri msg action unset-workspace-name "${workspace_idx}" >/dev/null 2>&1 || true
+done <<< "${workspace_indices}"
+

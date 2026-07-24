@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+STATE_FILE="$HOME/.local/state/colorscheme"
+COLORS_DIR="$HOME/.config/alacritty"
+ALACRITTY_COLORS="$HOME/.local/share/alacritty/colorscheme.toml"
+
+mkdir -p "$(dirname "$STATE_FILE")"
+mkdir -p "$(dirname "$ALACRITTY_COLORS")"
+
+current=$(cat "$STATE_FILE" 2>/dev/null || echo "dark")
+
+if [[ "$current" == "dark" ]]; then
+    next="light"
+else
+    next="dark"
+fi
+
+echo "$next" > "$STATE_FILE"
+gsettings set org.gnome.desktop.interface color-scheme "prefer-$next"
+cp "$COLORS_DIR/colors-$next.toml" "$ALACRITTY_COLORS"
+pkill -RTMIN+12 waybar 2>/dev/null || true

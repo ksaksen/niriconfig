@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if ! command -v niri >/dev/null 2>&1; then
+    echo "niri not found in PATH" >&2
+    exit 1
+fi
+
+if ! command -v python3 >/dev/null 2>&1; then
+    echo "python3 not found in PATH" >&2
+    exit 1
+fi
+
+workspace_id="$(
+    niri msg --json workspaces | python3 -c '
+import json
+import sys
+
+workspaces = json.load(sys.stdin)
+for workspace in workspaces:
+    if workspace.get("is_focused") is True:
+        print(workspace["id"])
+        raise SystemExit(0)
+
+for workspace in workspaces:
+    if workspace.get("is_active") is True:
+        print(workspace["id"])
+        raise SystemExit(0)
+
+raise SystemExit(1)
+'
+)"
+
+if [[ -z "${workspace_id}" ]]; then
+    exit 0
+fi
+
+previous_window_ids=""
+
+for _ in 1 2 3 4 5; do
+    window_ids="$(
+        niri msg --json windows | python3 -c '
+import json
+import sys
+
+workspace_id = int(sys.argv[1])
+windows = json.load(sys.stdin)
+
+for window in windows:
+    if window.get("workspace_id") == workspace_id:
+        print(window["id"])
+' "${workspace_id}"
+    )"
+
+    if [[ -z "${window_ids}" ]]; then
+        exit 0
+    fi
+
+    if [[ "${window_ids}" == "${previous_window_ids}" ]]; then
+        break
+    fi
+
+    previous_window_ids="${window_ids}"
+
+    while IFS= read -r window_id; do
+        [[ -n "${window_id}" ]] || continue
+        niri msg action focus-window --id "${window_id}"
+        niri msg action close-window
+        sleep 0.1
+    done <<< "${window_ids}"
+
+    sleep 0.2
+done
+
+"${HOME}/.local/bin/cleanup-empty-workspaces" >/dev/null 2>&1 || true
+
+exit 0

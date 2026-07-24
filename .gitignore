@@ -1,0 +1,8 @@
+.DS_Store
+*.swp
+*.swo
+.codex
+.codex/
+.idea/
+__pycache__/
+*.pyc

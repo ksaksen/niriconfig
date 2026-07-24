@@ -1,0 +1,1 @@
+%linuxdesktopusers ALL=(ALL) NOPASSWD: /usr/bin/udevadm trigger --action=change --subsystem-match=drm

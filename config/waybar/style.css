@@ -1,0 +1,258 @@
+@define-color bg rgba(15, 20, 28, 0.88);
+@define-color bg-strong rgba(8, 12, 18, 0.96);
+@define-color bg-soft rgba(33, 41, 54, 0.82);
+@define-color fg #f4efe6;
+@define-color fg-muted #b8c0cc;
+@define-color cyan #69d2e7;
+@define-color mint #a7dbd8;
+@define-color amber #f7b267;
+@define-color coral #f4845f;
+@define-color red #ff6b6b;
+@define-color lime #b8e986;
+
+* {
+    border: none;
+    border-radius: 0;
+    font-family: "IosevkaTerm Nerd Font", "IBM Plex Sans", "Font Awesome 6 Free", sans-serif;
+    font-size: 13px;
+    min-height: 0;
+}
+
+window#waybar {
+    background: transparent;
+    color: @fg;
+}
+
+tooltip {
+    background: @bg-strong;
+    border: 1px solid rgba(105, 210, 231, 0.35);
+    border-radius: 14px;
+    color: @fg;
+}
+
+tooltip label {
+    color: @fg;
+    font-size: 12px;
+}
+
+#workspaces,
+#custom-media,
+#mpd,
+#custom-updates,
+#custom-docker,
+#custom-colorscheme,
+#custom-display,
+#custom-screenshot-region,
+#idle_inhibitor,
+#network,
+#pulseaudio,
+#power-profiles-daemon,
+#cpu,
+#memory,
+#backlight,
+#keyboard-state,
+#language,
+#battery,
+#battery.bat2,
+#clock.date,
+#clock,
+#tray,
+#custom-power {
+    margin: 6px 3px 4px;
+    padding: 5px 10px;
+    border-radius: 14px;
+    background: linear-gradient(180deg, rgba(33, 41, 54, 0.92), rgba(15, 20, 28, 0.92));
+    color: @fg;
+    box-shadow: inset 0 1px rgba(255, 255, 255, 0.05);
+}
+
+#workspaces {
+    padding: 4px 8px;
+    background: linear-gradient(180deg, rgba(8, 12, 18, 0.96), rgba(24, 29, 40, 0.96));
+    border: 1px solid rgba(167, 219, 216, 0.18);
+}
+
+#workspaces button {
+    min-width: 20px;
+    margin: 0 3px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    color: @fg-muted;
+    transition: none;
+    font-size: 12px;
+}
+
+#workspaces button:hover {
+    background: rgba(105, 210, 231, 0.14);
+    color: @fg;
+    box-shadow: none;
+}
+
+#workspaces button.active,
+#workspaces button.focused {
+    background: linear-gradient(135deg, @cyan, @mint);
+    color: @bg-strong;
+}
+
+#workspaces button.urgent {
+    background: linear-gradient(135deg, @red, @coral);
+    color: @fg;
+}
+
+#custom-media {
+    min-width: 120px;
+    color: @mint;
+}
+
+#custom-docker {
+    margin-left: 6px;
+    margin-right: 6px;
+    padding: 4px 10px;
+    font-size: 12px;
+    background: linear-gradient(180deg, rgba(33, 41, 54, 0.92), rgba(15, 20, 28, 0.92));
+}
+
+#custom-updates {
+    margin-left: 6px;
+    margin-right: 6px;
+    padding: 4px 10px;
+    font-size: 12px;
+}
+
+#custom-updates.none {
+    color: @fg-muted;
+}
+
+#custom-updates.pending {
+    color: @amber;
+}
+
+#custom-colorscheme {
+    margin-left: 6px;
+    margin-right: 6px;
+    padding: 4px 12px;
+    font-size: 14px;
+    color: @fg-muted;
+}
+
+#custom-colorscheme.light {
+    color: @amber;
+}
+
+#custom-colorscheme.dark {
+    color: @fg-muted;
+}
+
+#custom-display {
+    margin-left: 6px;
+    margin-right: 6px;
+    padding: 4px 10px;
+    font-size: 12px;
+    color: @fg-muted;
+}
+
+#custom-display.ok {
+    color: @fg;
+}
+
+#custom-display.warning {
+    color: @amber;
+}
+
+#custom-display.error {
+    background: linear-gradient(135deg, rgba(244, 132, 95, 0.95), rgba(255, 107, 107, 0.95));
+    color: @fg;
+}
+
+#custom-screenshot-region {
+    padding-left: 14px;
+    padding-right: 14px;
+    color: @cyan;
+}
+
+#custom-updates.security {
+    background: linear-gradient(135deg, rgba(244, 132, 95, 0.95), rgba(255, 107, 107, 0.95));
+    color: @fg;
+}
+
+#custom-updates.error {
+    background: linear-gradient(135deg, rgba(244, 132, 95, 0.95), rgba(255, 107, 107, 0.95));
+    color: @fg;
+}
+
+#custom-docker.running {
+    color: @fg;
+}
+
+#custom-docker.warning {
+    color: @amber;
+}
+
+#custom-docker.empty,
+#custom-docker.missing {
+    color: @fg-muted;
+}
+
+#custom-docker.error {
+    background: linear-gradient(135deg, rgba(244, 132, 95, 0.95), rgba(255, 107, 107, 0.95));
+    color: @fg;
+}
+
+#clock {
+    padding-left: 12px;
+    padding-right: 12px;
+    min-width: 126px;
+    background: linear-gradient(135deg, rgba(105, 210, 231, 0.2), rgba(247, 178, 103, 0.22));
+    color: @fg;
+    font-family: "IosevkaTerm Nerd Font", monospace;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+}
+
+#clock.date {
+    background: linear-gradient(135deg, rgba(167, 219, 216, 0.16), rgba(105, 210, 231, 0.1));
+    color: @mint;
+    letter-spacing: 0.04em;
+}
+
+#custom-power {
+    padding-left: 12px;
+    padding-right: 12px;
+    background: linear-gradient(135deg, rgba(244, 132, 95, 0.92), rgba(247, 178, 103, 0.92));
+    color: @bg-strong;
+    font-weight: 700;
+}
+
+#pulseaudio.muted,
+#network.disconnected,
+#battery.warning,
+#battery.critical,
+#idle_inhibitor.activated {
+    background: linear-gradient(135deg, rgba(244, 132, 95, 0.95), rgba(255, 107, 107, 0.95));
+    color: @fg;
+}
+
+#battery.charging,
+#power-profiles-daemon.performance,
+#power-profiles-daemon.balanced {
+    color: @lime;
+}
+
+#cpu,
+#memory,
+#backlight,
+#network,
+#pulseaudio,
+#battery,
+#power-profiles-daemon,
+#keyboard-state,
+#language,
+#idle_inhibitor,
+#mpd {
+    color: @fg-muted;
+}
+
+#tray {
+    padding-left: 8px;
+    padding-right: 8px;
+}
