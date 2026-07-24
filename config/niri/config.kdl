@@ -257,8 +257,10 @@ layout {
 // See the binds section below for more spawn examples.
 
 // Start wallpaper via a helper that targets the currently active output.
-spawn-at-startup "$HOME/.local/bin/niri-set-wallpaper"
-spawn-at-startup "$HOME/.local/bin/workspace-gc"
+// Plain spawn-at-startup does NOT expand $HOME (no shell involved) - use
+// spawn-sh-at-startup for anything with variables, per the note below.
+spawn-sh-at-startup "$HOME/.local/bin/niri-set-wallpaper"
+spawn-sh-at-startup "$HOME/.local/bin/workspace-gc"
 spawn-at-startup "waybar"
 spawn-at-startup "kanshi"
 
@@ -349,7 +351,7 @@ window-rule {
 
 binds {
 
-    Mod+F9 { spawn "$HOME/.local/bin/idea-x11"; }
+    Mod+F9 { spawn-sh "$HOME/.local/bin/idea-x11"; }
 
     // Keys consist of modifiers separated by + signs, followed by an XKB key name
     // in the end. To find an XKB name for a particular key, you may use a program
@@ -370,7 +372,7 @@ binds {
     Mod+D hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn-sh "swaylock -i $HOME/.local/share/wallpapers/italy-landscape_5120x1440.jpg -f -c 000000"; }
     Super+Alt+X hotkey-overlay-title="Lock the Screen: swaylock" { spawn-sh "swaylock --daemonize -c 000000 && systemctl suspend"; }
-    Super+Alt+A hotkey-overlay-title="Toggle lys/mørkt fargetema" { spawn "$HOME/.local/bin/color-scheme-toggle"; }
+    Super+Alt+A hotkey-overlay-title="Toggle lys/mørkt fargetema" { spawn-sh "$HOME/.local/bin/color-scheme-toggle"; }
 
     // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.
     // Note: the entire command goes as a single argument. It's passed verbatim to `sh -c`.
